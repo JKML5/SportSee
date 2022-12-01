@@ -1,7 +1,5 @@
-import '../css/Home.css'
-
 function Home() {
-  return <div>Hello World!</div>
+  return <div>Accueil</div>
 }
 
 export default Home
