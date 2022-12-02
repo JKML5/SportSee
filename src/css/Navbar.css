@@ -1,0 +1,19 @@
+.navbar {
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 24px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.navbar a {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.navbar a:hover {
+	text-decoration: underline;
+	text-underline-offset: 8px;
+}
