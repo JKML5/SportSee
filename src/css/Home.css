@@ -1,0 +1,39 @@
+.title {
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 24px;
+  margin-bottom: 40px;
+}
+
+.title strong {
+  color: #FF0101;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 30px;
+  margin-top: 80px;
+  height: 600px;
+}
+
+.dashboard .charts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+}
+
+.dashboard .charts :first-child {
+  grid-column: 1 / -1;
+}
+
+.dashboard .stats {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.dashboard .card {
+  background-color: #FBFBFB;
+  border-radius: 5px;
+}
