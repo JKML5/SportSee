@@ -1,4 +1,5 @@
 import '../css/Home.css'
+import BarChart from '../components/BarChart'
 
 function Home() {
   return (
@@ -10,7 +11,9 @@ function Home() {
       <div className="dashboard">
         <div className="charts">
           <div className="card">Stat</div>
-          <div className="card">Stat</div>
+          <div className="card card1">
+            <BarChart />
+          </div>
           <div className="card">Stat</div>
           <div className="card">Stat</div>
         </div>
