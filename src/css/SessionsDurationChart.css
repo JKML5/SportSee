@@ -1,0 +1,8 @@
+.sessionsDurationChart {
+  background-color: #FF0000;
+  font-size: 15px;
+}
+
+.recharts-text tspan {
+  opacity: 0.5;
+}

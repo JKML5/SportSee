@@ -1,5 +1,8 @@
 import '../css/Home.css'
-import BarChart from '../components/BarChart'
+import SessionsDurationChart from '../components/SessionsDurationChart'
+import DailyActivityChart from '../components/DailyActivityChart'
+import RadarChart from '../components/RadarChart'
+import SimpleRadarBarChart from '../components/SimpleRadialBarChart'
 
 function Home() {
   return (
@@ -10,12 +13,16 @@ function Home() {
       <p>Félicitation ! Vous avez explosé vos objectifs hier 👏</p>
       <div className="dashboard">
         <div className="charts">
-          <div className="card">Stat</div>
-          <div className="card card1">
-            <BarChart />
+          <DailyActivityChart />
+          <div className="card">
+            <SessionsDurationChart />
           </div>
-          <div className="card">Stat</div>
-          <div className="card">Stat</div>
+          <div className="card">
+            <RadarChart />
+          </div>
+          <div className="card">
+            <SimpleRadarBarChart />
+          </div>
         </div>
         <div className="stats">
           <div className="card">Stat</div>
