@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-
 import {
   BarChart,
   Bar,
@@ -11,20 +9,14 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts'
+import useFetch from '../utils/hooks'
 import '../css/DailyActivityChart.css'
 
 function DailyActivityChart() {
   const { userId } = useParams()
-  const [activities, setActivities] = useState({})
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/user/${userId}/activity`).then((response) =>
-      response
-        .json()
-        .then(({ data }) => setActivities(data.sessions))
-        .catch((error) => console.log(error))
-    )
-  }, [])
+  const activities = useFetch(`http://localhost:3000/user/${userId}/activity`)
+    .data.sessions
 
   return (
     <ResponsiveContainer className="card" width="100%" height="100%">
