@@ -14,7 +14,7 @@ function App() {
         <Sidebar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/:userId" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/community" element={<Community />} />
