@@ -1,0 +1,39 @@
+.simpleStat {
+  display: flex;
+  align-items: center;
+}
+
+.simpleStat .thumbnail {
+  width: 60px;
+  height: 60px;
+  padding: 20px;
+  border-radius: 6px;
+  margin-left: 30px;
+  margin-right: 24px;
+}
+.simpleStat.red .thumbnail { 
+  background: url('../assets/stats-red.svg') no-repeat center #FBEAEA;
+}
+.simpleStat.blue .thumbnail { 
+  background: url('../assets/stats-blue.svg') no-repeat center #E9F4FB;
+}
+.simpleStat.yellow .thumbnail { 
+  background: url('../assets/stats-yellow.svg') no-repeat center #FAF6E5;
+}
+.simpleStat.pink .thumbnail { 
+  background: url('../assets/stats-pink.svg') no-repeat center #FBEAEF;
+}
+
+.simpleStat .description h2 {
+  color: #282D30;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.simpleStat .description p {
+  color: #74798C;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+}

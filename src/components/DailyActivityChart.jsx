@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {
   BarChart,
@@ -36,9 +35,7 @@ function CustomTooltip({ active, payload }) {
   return null
 }
 
-function DailyActivityChart() {
-  const { userId } = useParams()
-
+function DailyActivityChart({ userId }) {
   const activities = useFetch(`http://localhost:3000/user/${userId}/activity`)
     .data.sessions
 
@@ -108,6 +105,10 @@ function DailyActivityChart() {
       </BarChart>
     </ResponsiveContainer>
   )
+}
+
+DailyActivityChart.propTypes = {
+  userId: PropTypes.number.isRequired,
 }
 
 export default DailyActivityChart
