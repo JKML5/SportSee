@@ -1,3 +1,8 @@
+/* Container */
+.dailyActivityChart {
+  background-color: #FBFBFB;
+}
+
 /* Title */
 .recharts-legend-item-text {
   font-family: 'Roboto', sans-serif;
@@ -18,7 +23,7 @@
 }
 
 /* Tooltip */
-.recharts-tooltip-wrapper, .recharts-default-tooltip {
+.dailyActivityChart .recharts-tooltip-wrapper, .recharts-default-tooltip {
   background-color: #E60000;
   color: #ffffff;
   padding: 15px;

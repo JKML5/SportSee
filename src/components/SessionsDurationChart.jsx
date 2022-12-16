@@ -1,37 +1,74 @@
-import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { Navigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Text,
+} from 'recharts'
+import useFetch from '../utils/hooks'
 import '../css/SessionsDurationChart.css'
 
-function SessionsDurationChart() {
-  const data = [
-    {
-      name: 'L',
-      uv: 400,
-    },
-    {
-      name: 'M',
-      uv: 300,
-    },
-    {
-      name: 'M',
-      uv: 200,
-    },
-    {
-      name: 'J',
-      uv: 278,
-    },
-    {
-      name: 'V',
-      uv: 189,
-    },
-    {
-      name: 'S',
-      uv: 239,
-    },
-    {
-      name: 'D',
-      uv: 349,
-    },
-  ]
+function CustomTooltip({ active, payload }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{`${payload[0].value}`} min</p>
+      </div>
+    )
+  }
+
+  CustomTooltip.propTypes = {
+    active: PropTypes.bool,
+    payload: PropTypes.arrayOf(PropTypes.objectOf),
+  }
+
+  CustomTooltip.defaultProps = {
+    active: true,
+    payload: null,
+  }
+
+  return null
+}
+
+function CustomizedLabel() {
+  return (
+    <Text
+      x={30}
+      y={60}
+      width={150}
+      fill="#ffffff"
+      fillOpacity="0.6"
+      fontSize={16}
+    >
+      Durée moyenne des sessions
+    </Text>
+  )
+}
+
+function SessionsDurationChart({ userId }) {
+  if (userId === undefined || userId <= 0) {
+    return <Navigate to="/error404" />
+  }
+
+  let sessionsDurationChartData = useFetch(
+    `http://localhost:3000/user/${userId}/average-sessions`
+  )
+
+  if (
+    sessionsDurationChartData !== undefined &&
+    sessionsDurationChartData.data.sessions !== undefined
+  ) {
+    sessionsDurationChartData = sessionsDurationChartData.data.sessions
+
+    sessionsDurationChartData.map((obj) => {
+      const newObj = obj
+      newObj.name = obj.day
+      return newObj
+    })
+  }
 
   return (
     <ResponsiveContainer
@@ -40,7 +77,7 @@ function SessionsDurationChart() {
       className="sessionsDurationChart"
     >
       <LineChart
-        data={data}
+        data={sessionsDurationChartData}
         margin={{ top: 100, left: 15, right: 15, bottom: 15 }}
       >
         <XAxis
@@ -53,20 +90,16 @@ function SessionsDurationChart() {
             fontSize: '12px',
             opacity: '0.6',
           }}
-          label={{
-            value: 'Durée moyenne des sessions',
-            position: 'insideBottomLeft',
-            offset: 15,
-            dy: -175,
-            fill: '#ffffff',
-            fillOpacity: '0.6',
-          }}
+          label={<CustomizedLabel />}
         />
-        <Tooltip />
+        <Tooltip
+          content={<CustomTooltip />}
+          wrapperStyle={{ outline: 'none' }}
+        />
 
         <Line
           type="monotone"
-          dataKey="uv"
+          dataKey="sessionLength"
           stroke="#ffffff"
           dot={false}
           strokeWidth="2"
@@ -74,6 +107,10 @@ function SessionsDurationChart() {
       </LineChart>
     </ResponsiveContainer>
   )
+}
+
+SessionsDurationChart.propTypes = {
+  userId: PropTypes.number.isRequired,
 }
 
 export default SessionsDurationChart

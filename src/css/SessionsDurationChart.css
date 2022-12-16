@@ -6,3 +6,11 @@
 .recharts-text tspan {
   opacity: 0.5;
 }
+
+/* Tooltip */
+.sessionsDurationChart .recharts-tooltip-wrapper, .recharts-default-tooltip {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 15px;
+  font-size: 10px;
+}

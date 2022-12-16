@@ -33,7 +33,7 @@
   grid-gap: 30px;
 }
 
-.dashboard .card {
+.dashboard .card, .recharts-responsive-container {
   background-color: #FBFBFB;
   border-radius: 5px;
 }

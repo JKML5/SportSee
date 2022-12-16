@@ -2,7 +2,7 @@ import '../css/Home.css'
 import { useParams } from 'react-router-dom'
 import SessionsDurationChart from '../components/SessionsDurationChart'
 import DailyActivityChart from '../components/DailyActivityChart'
-import RadarChart from '../components/RadarChart'
+import PerformanceChart from '../components/PerformanceChart'
 import SimpleRadarBarChart from '../components/SimpleRadialBarChart'
 import SimpleStat from '../components/SimpleStat'
 import useFetch from '../utils/hooks'
@@ -11,14 +11,6 @@ function Home() {
   const { userId } = useParams()
 
   const data = []
-
-  const activities = useFetch(`http://localhost:3000/user/${userId}/activity`)
-    .data.sessions
-  if (activities !== undefined) {
-    console.log('***')
-    console.log(activities)
-    console.log('***')
-  }
 
   const generalData = useFetch(`http://localhost:3000/user/${userId}`).data
   if (generalData !== undefined && generalData.keyData !== undefined) {
@@ -29,15 +21,6 @@ function Home() {
     data.lipidTitle = `${generalData.keyData.lipidCount}g`
   }
 
-  console.log(data)
-
-  // console.log('***')
-  // const performanceData = useFetch(
-  //   `http://localhost:3000/user/${userId}/performance`
-  // )
-  // console.log(performanceData.data)
-  // console.log('***')
-
   return (
     <>
       <h1 className="title">
@@ -47,12 +30,9 @@ function Home() {
       <div className="dashboard">
         <div className="charts">
           <DailyActivityChart userId={parseInt(userId, 10)} />
-          <div className="card">
-            <SessionsDurationChart />
-          </div>
-          <div className="card">
-            <RadarChart />
-          </div>
+          <SessionsDurationChart userId={parseInt(userId, 10)} />
+          <PerformanceChart userId={parseInt(userId, 10)} />
+
           <div className="card">
             <SimpleRadarBarChart />
           </div>

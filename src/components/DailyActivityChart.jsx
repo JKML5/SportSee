@@ -48,7 +48,11 @@ function DailyActivityChart({ userId }) {
   }
 
   return (
-    <ResponsiveContainer className="card" width="100%" height="100%">
+    <ResponsiveContainer
+      className="dailyActivityChart"
+      width="100%"
+      height="100%"
+    >
       <BarChart
         width={835}
         height={320}
