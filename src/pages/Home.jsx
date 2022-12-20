@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import SessionsDurationChart from '../components/SessionsDurationChart'
 import DailyActivityChart from '../components/DailyActivityChart'
 import PerformanceChart from '../components/PerformanceChart'
-import SimpleRadarBarChart from '../components/SimpleRadialBarChart'
+import TodayScoreChart from '../components/TodayScoreChart'
 import SimpleStat from '../components/SimpleStat'
 import useFetch from '../utils/hooks'
 
@@ -13,12 +13,31 @@ function Home() {
   const data = []
 
   const generalData = useFetch(`http://localhost:3000/user/${userId}`).data
-  if (generalData !== undefined && generalData.keyData !== undefined) {
+  if (
+    generalData !== undefined &&
+    generalData.keyData !== undefined &&
+    (generalData.todayScore !== undefined || generalData.score !== undefined)
+  ) {
     data.firstName = generalData.userInfos.firstName
     data.caloriesTitle = `${generalData.keyData.calorieCount}kCal`
     data.proteinTitle = `${generalData.keyData.proteinCount}g`
     data.carbohydrateTitle = `${generalData.keyData.carbohydrateCount}g`
     data.lipidTitle = `${generalData.keyData.lipidCount}g`
+    data.score =
+      generalData.todayScore !== undefined
+        ? parseFloat(generalData.todayScore) * 100
+        : 0
+
+    data.score =
+      generalData.score !== undefined
+        ? parseFloat(generalData.score) * 100
+        : data.score
+  } else {
+    data.caloriesTitle = '0 kCal'
+    data.proteinTitle = '0 g'
+    data.carbohydrateTitle = '0 g'
+    data.lipidTitle = '0 g'
+    data.score = 0
   }
 
   return (
@@ -32,10 +51,7 @@ function Home() {
           <DailyActivityChart userId={parseInt(userId, 10)} />
           <SessionsDurationChart userId={parseInt(userId, 10)} />
           <PerformanceChart userId={parseInt(userId, 10)} />
-
-          <div className="card">
-            <SimpleRadarBarChart />
-          </div>
+          <TodayScoreChart score={data.score} />
         </div>
         <div className="stats">
           <SimpleStat
