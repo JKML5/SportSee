@@ -6,39 +6,51 @@ import PerformanceChart from '../components/PerformanceChart'
 import TodayScoreChart from '../components/TodayScoreChart'
 import SimpleStat from '../components/SimpleStat'
 import useFetch from '../utils/hooks'
+import todayScoreChartMockedData from '../_mocks_/TodayScoreChartData'
+
+/**
+ * Load & Format chart's data from backend or mock
+ * @param number userId User's Id
+ * @returns array Formatted data e.g. [ { name: '01', kilogram: 80, calories: 240 }, { ... } ]
+ */
+function getFormattedData(userId) {
+  const URL = `http://localhost:3000/user/${userId}`
+  const data = useFetch(URL)
+  const formattedData = []
+
+  if (
+    data !== undefined &&
+    data.data.keyData !== undefined &&
+    (data.data.todayScore !== undefined || data.data.score !== undefined)
+  ) {
+    formattedData.firstName = data.data.userInfos.firstName
+    formattedData.caloriesTitle = `${data.data.keyData.calorieCount}kCal`
+    formattedData.proteinTitle = `${data.data.keyData.proteinCount}g`
+    formattedData.carbohydrateTitle = `${data.data.keyData.carbohydrateCount}g`
+    formattedData.lipidTitle = `${data.data.keyData.lipidCount}g`
+    formattedData.score =
+      data.todayScore !== undefined
+        ? parseFloat(data.todayScore) * 100
+        : todayScoreChartMockedData
+
+    // TODO fix backend data variable name todayScore & score
+    formattedData.score =
+      data.score !== undefined ? parseFloat(data.score) * 100 : data.score
+  } else {
+    formattedData.caloriesTitle = '0 kCal'
+    formattedData.proteinTitle = '0 g'
+    formattedData.carbohydrateTitle = '0 g'
+    formattedData.lipidTitle = '0 g'
+    formattedData.score = 0
+  }
+
+  return formattedData
+}
 
 function Home() {
   const { userId } = useParams()
 
-  const data = []
-
-  const generalData = useFetch(`http://localhost:3000/user/${userId}`).data
-  if (
-    generalData !== undefined &&
-    generalData.keyData !== undefined &&
-    (generalData.todayScore !== undefined || generalData.score !== undefined)
-  ) {
-    data.firstName = generalData.userInfos.firstName
-    data.caloriesTitle = `${generalData.keyData.calorieCount}kCal`
-    data.proteinTitle = `${generalData.keyData.proteinCount}g`
-    data.carbohydrateTitle = `${generalData.keyData.carbohydrateCount}g`
-    data.lipidTitle = `${generalData.keyData.lipidCount}g`
-    data.score =
-      generalData.todayScore !== undefined
-        ? parseFloat(generalData.todayScore) * 100
-        : 0
-
-    data.score =
-      generalData.score !== undefined
-        ? parseFloat(generalData.score) * 100
-        : data.score
-  } else {
-    data.caloriesTitle = '0 kCal'
-    data.proteinTitle = '0 g'
-    data.carbohydrateTitle = '0 g'
-    data.lipidTitle = '0 g'
-    data.score = 0
-  }
+  const data = getFormattedData(userId)
 
   return (
     <>

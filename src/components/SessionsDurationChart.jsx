@@ -10,6 +10,27 @@ import {
 } from 'recharts'
 import useFetch from '../utils/hooks'
 import '../css/SessionsDurationChart.css'
+import sessionsDurationChartMockedData from '../_mocks_/SessionsDurationChartData'
+
+/**
+ * Load & Format chart's data from backend or mock
+ * @param number userId User's Id
+ * @returns array Formatted data e.g. [ { name: 1, sessionLength: 30 }, { ... } ]
+ */
+function getFormattedData(userId) {
+  const URL = `http://localhost:3000/user/${userId}/average-sessions`
+  const data = useFetch(URL)
+
+  if (data !== undefined && data.data.sessions !== undefined) {
+    return data.data.sessions.map((obj) => {
+      const newObj = obj
+      newObj.name = obj.day
+      return newObj
+    })
+  }
+
+  return sessionsDurationChartMockedData
+}
 
 function CustomTooltip({ active, payload }) {
   if (active && payload && payload.length) {
@@ -53,22 +74,7 @@ function SessionsDurationChart({ userId }) {
     return <Navigate to="/error404" />
   }
 
-  let sessionsDurationChartData = useFetch(
-    `http://localhost:3000/user/${userId}/average-sessions`
-  )
-
-  if (
-    sessionsDurationChartData !== undefined &&
-    sessionsDurationChartData.data.sessions !== undefined
-  ) {
-    sessionsDurationChartData = sessionsDurationChartData.data.sessions
-
-    sessionsDurationChartData.map((obj) => {
-      const newObj = obj
-      newObj.name = obj.day
-      return newObj
-    })
-  }
+  const sessionsDurationChartData = getFormattedData(userId)
 
   return (
     <ResponsiveContainer

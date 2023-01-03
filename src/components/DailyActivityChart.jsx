@@ -11,6 +11,33 @@ import {
 } from 'recharts'
 import useFetch from '../utils/hooks'
 import '../css/DailyActivityChart.css'
+import dailyActivityChartMockedData from '../_mocks_/DailyActivityChartData'
+
+/**
+ * Load & Format chart's data from backend or mock
+ * @param number userId User's Id
+ * @returns array Formatted data e.g. [ { name: '01', kilogram: 80, calories: 240 }, { ... } ]
+ */
+function getFormattedData(userId) {
+  const URL = `http://localhost:3000/user/${userId}/activity`
+  const data = useFetch(URL)
+
+  if (data !== undefined && data.data.sessions !== undefined) {
+    const formattedData = []
+
+    data.data.sessions.forEach((obj) => {
+      formattedData.push({
+        name: obj.day.slice(8, 10),
+        kilogram: obj.kilogram,
+        calories: obj.calories,
+      })
+    })
+
+    return formattedData
+  }
+
+  return dailyActivityChartMockedData
+}
 
 function CustomTooltip({ active, payload }) {
   if (active && payload && payload.length) {
@@ -36,16 +63,7 @@ function CustomTooltip({ active, payload }) {
 }
 
 function DailyActivityChart({ userId }) {
-  const activities = useFetch(`http://localhost:3000/user/${userId}/activity`)
-    .data.sessions
-
-  if (activities !== undefined) {
-    activities.map((obj) => {
-      const newObj = obj
-      newObj.name = obj.day.slice(8, 10)
-      return newObj
-    })
-  }
+  const dailyActivityChartData = getFormattedData(userId)
 
   return (
     <ResponsiveContainer
@@ -56,7 +74,7 @@ function DailyActivityChart({ userId }) {
       <BarChart
         width={835}
         height={320}
-        data={activities}
+        data={dailyActivityChartData}
         margin={{
           top: 60,
           right: 30,
